@@ -11,8 +11,14 @@ import com.packt.webstore.service.ProductService;
 
 @Service
 public class ProductServiceImpl implements ProductService {
+
 	@Autowired
 	private ProductRepository productRepository;
+
+	@Override
+	public List<Product> getAllProducts() {
+		return productRepository.getAllProducts();
+	}
 
 	@Override
 	public void updateAllStock() {
