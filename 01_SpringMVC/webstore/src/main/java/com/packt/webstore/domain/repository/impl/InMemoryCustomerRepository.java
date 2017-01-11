@@ -23,7 +23,7 @@ public class InMemoryCustomerRepository implements CustomerRepository {
 	@Override
 	public List<Customer> getAllCustomers() {
 		Map<String, Object> params = new HashMap<>();
-		List<Customer> result = jdbcTemplate.query("SELECT * FROM customers", params, new CustomerMapper());
+		List<Customer> result = jdbcTemplate.query("SELECT * FROM CUSTOMERS", params, new CustomerMapper());
 
 		return result;
 	}

@@ -23,9 +23,30 @@ public class InMemoryProductRepository implements ProductRepository {
 	@Override
 	public List<Product> getAllProducts() {
 		Map<String, Object> params = new HashMap<>();
-		List<Product> result = jdbcTemplate.query("SELECT * FROM products", params, new ProductMapper());
+		String SQL = "SELECT * FROM PRODUCTS";
+		List<Product> result = jdbcTemplate.query(SQL, params, new ProductMapper());
 
 		return result;
+	}
+
+	@Override
+	public List<Product> getProductsByCategory(String category) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("category", category);
+		String SQL = "SELECT * FROM PRODUCTS WHERE LOWER(CATEGORY) = LOWER(:category)";
+		List<Product> result = jdbcTemplate.query(SQL, params, new ProductMapper());
+
+		return result;
+	}
+
+	@Override
+	public void updateStock(String productId, long noOfUnits) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("id", productId);
+		params.put("unitsInStock", noOfUnits);
+		String SQL = "UPDATE PRODUCTS SET UNITS_IN_STOCK = :unitsInStock WHERE ID = :id";
+
+		jdbcTemplate.update(SQL, params);
 	}
 
 	private static final class ProductMapper implements RowMapper<Product> {
@@ -43,16 +64,5 @@ public class InMemoryProductRepository implements ProductRepository {
 			product.setDiscontinued(rs.getBoolean("DISCONTINUED"));
 			return product;
 		}
-	}
-
-	@Override
-	public void updateStock(String productId, long noOfUnits) {
-		String SQL = "UPDATE PRODUCTS SET UNITS_IN_STOCK = :unitsInStock WHERE ID = :id";
-
-		Map<String, Object> params = new HashMap<>();
-		params.put("unitsInStock", noOfUnits);
-		params.put("id", productId);
-
-		jdbcTemplate.update(SQL, params);
 	}
 }
