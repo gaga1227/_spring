@@ -3,6 +3,7 @@ package com.packt.webstore.domain.repository.impl;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +36,24 @@ public class InMemoryProductRepository implements ProductRepository {
 		params.put("category", category);
 		String SQL = "SELECT * FROM PRODUCTS WHERE LOWER(CATEGORY) = LOWER(:category)";
 		List<Product> result = jdbcTemplate.query(SQL, params, new ProductMapper());
+
+		return result;
+	}
+
+	@Override
+	public List<Product> getProductsByFilter(Map<String, List<String>> filterParams) {
+		String SQL = "SELECT * FROM PRODUCTS WHERE CATEGORY IN (:categories) AND MANUFACTURER IN (:brands)";
+		List<Product> result = jdbcTemplate.query(SQL, filterParams, new ProductMapper());
+
+		return result;
+	}
+
+	@Override
+	public Product getProductById(String productID) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("id", productID);
+		String SQL = "SELECT * FROM PRODUCTS WHERE ID = :id";
+		Product result = jdbcTemplate.queryForObject(SQL, params, new ProductMapper());
 
 		return result;
 	}
