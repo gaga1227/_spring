@@ -68,6 +68,26 @@ public class InMemoryProductRepository implements ProductRepository {
 		jdbcTemplate.update(SQL, params);
 	}
 
+	@Override
+	public void addProduct(Product product) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("id", product.getProductId());
+		params.put("name", product.getName());
+		params.put("desc", product.getDescription());
+		params.put("price", product.getUnitPrice());
+		params.put("manufacturer", product.getManufacturer());
+		params.put("category", product.getCategory());
+		params.put("condition", product.getCondition());
+		params.put("inStock", product.getUnitsInStock());
+		params.put("inOrder", product.getUnitsInOrder());
+		params.put("discontinued", product.isDiscontinued());
+
+		String SQL = "INSERT INTO PRODUCTS (ID, NAME, DESCRIPTION, UNIT_PRICE, MANUFACTURER, CATEGORY, CONDITION, UNITS_IN_STOCK, UNITS_IN_ORDER, DISCONTINUED) "
+				+ "VALUES (:id, :name, :desc, :price, :manufacturer, :category, :condition, :inStock, :inOrder, :discontinued)";
+
+		jdbcTemplate.update(SQL, params);
+	}
+
 	private static final class ProductMapper implements RowMapper<Product> {
 		public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Product product = new Product();
