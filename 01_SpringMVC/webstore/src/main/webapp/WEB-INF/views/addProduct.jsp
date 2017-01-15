@@ -90,6 +90,7 @@
 					</label>
 					<div class="col-sm-8">
 						<form:input id="unitsInStock" path="unitsInStock" type="text" class="form-control" />
+						<form:errors path="unitsInStock" cssClass="text-danger"/>
 					</div>
 				</div>
 
