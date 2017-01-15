@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -90,8 +91,13 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = "/products/add", method = RequestMethod.POST)
-	public String processAddNewProductForm(@ModelAttribute("newProduct") Product productToBeAdded, BindingResult result,
-			HttpServletRequest request) {
+	public String processAddNewProductForm(@ModelAttribute("newProduct") @Valid Product productToBeAdded,
+			BindingResult result, HttpServletRequest request) {
+
+		// stays on same page if has submission errors
+		if (result.hasErrors()) {
+			return "addProduct";
+		}
 
 		// throws exceptions when submitting with non white-listed attributes
 		String[] suppressedFields = result.getSuppressedFields();
