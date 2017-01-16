@@ -130,4 +130,12 @@ public class InMemoryCartRepository implements CartRepository {
 		String SQL_DELETE_CART_ITEM = "DELETE FROM CART_ITEM WHERE PRODUCT_ID = :productId AND CART_ID = :id";
 		jdbcTempleate.update(SQL_DELETE_CART_ITEM, params);
 	}
+
+	@Override
+	public void clearCart(String cartId) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("id", cartId);
+		String SQL_DELETE_CART_ITEM = "DELETE FROM CART_ITEM WHERE CART_ID = :id";
+		jdbcTempleate.update(SQL_DELETE_CART_ITEM, params);
+	}
 }
