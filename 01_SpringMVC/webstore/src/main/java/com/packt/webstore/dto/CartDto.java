@@ -11,6 +11,9 @@ public class CartDto implements Serializable {
 	private String id;
 	private List<CartItemDto> cartItems;
 
+	public CartDto() {
+	}
+
 	public CartDto(String id) {
 		this.id = id;
 		cartItems = new ArrayList<>();
