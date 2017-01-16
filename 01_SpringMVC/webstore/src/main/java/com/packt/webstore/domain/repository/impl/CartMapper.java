@@ -20,6 +20,8 @@ public class CartMapper implements RowMapper<Cart> {
 		cartItemMapper = new CartItemMapper(productService);
 	}
 
+	// maps from db to domain object
+	@Override
 	public Cart mapRow(ResultSet rs, int rowNum) throws SQLException {
 		String id = rs.getString("ID");
 		Cart cart = new Cart(id);

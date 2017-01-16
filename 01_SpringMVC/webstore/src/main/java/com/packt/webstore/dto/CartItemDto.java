@@ -12,7 +12,7 @@ public class CartItemDto implements Serializable {
 
 	public CartItemDto() {
 	}
-	
+
 	public String getId() {
 		return id;
 	}

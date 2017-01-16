@@ -15,6 +15,7 @@ public class CartItemMapper implements RowMapper<CartItem> {
 		this.productService = productService;
 	}
 
+	// maps from db to domain object
 	@Override
 	public CartItem mapRow(ResultSet rs, int rowNum) throws SQLException {
 		CartItem cartItem = new CartItem(rs.getString("ID"));
