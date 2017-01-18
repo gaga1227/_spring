@@ -4,47 +4,73 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/webflow
 	http://www.springframework.org/schema/webflow/spring-webflow.xsd">
 
+	<!-- global variable of order -->
+	<!-- equals to: 'Order order = new Order();' -->
 	<var name="order" class="com.packt.webstore.domain.Order" />
 
-	<!-- start state -->
+	<!-- action1: start checkout -->
+	<!-- e.g. http://localhost:8080/webstore/checkout?cartId=55AD1472D4EC -->
 	<action-state id="addCartToOrder">
+		<!-- validate cart and return expression result to order.cart -->
+		<!-- expecting requestParameters.cartId as request parameter -->
 		<evaluate expression="cartServiceImpl.validate(requestParameters.cartId)" result="order.cart" />
+		<!-- go to invalidCartWarning if invalid -->
 		<transition to="invalidCartWarning" on-exception="com.packt.webstore.exception.InvalidCartException" />
+		<!-- go to collectCustomerInfo if valid -->
 		<transition to="collectCustomerInfo" />
 	</action-state>
 
-	<view-state id="collectCustomerInfo" view="collectCustomerInfo.jsp" model="order">
+	<!-- step2a: collect customer info -->
+	<!-- id value maps to view file name e.g. collectCustomerInfo.jsp -->
+	<view-state id="collectCustomerInfo" model="order">
+		<!-- go to collectShippingDetail on customerInfoCollected event -->
 		<transition on="customerInfoCollected" to="collectShippingDetail" />
 	</view-state>
 
-	<view-state id="collectShippingDetail" model="order">
-		<transition on="shippingDetailCollected" to="orderConfirmation" />
-		<transition on="backToCollectCustomerInfo" to="collectCustomerInfo" />
-	</view-state>
-
-	<view-state id="orderConfirmation">
-		<transition on="orderConfirmed" to="processOrder" />
-		<transition on="backToCollectShippingDetail" to="collectShippingDetail" />
-	</view-state>
-
-	<action-state id="processOrder">
-		<evaluate expression="orderServiceImpl.saveOrder(order)" result="order.orderId" />
-		<transition to="thankCustomer" />
-	</action-state>
-
+	<!-- step2b: invalid cart -->
 	<view-state id="invalidCartWarning">
+		<!-- go to endState -->
 		<transition to="endState" />
 	</view-state>
 
+	<!-- step3: collect shipping info -->
+	<view-state id="collectShippingDetail" model="order">
+		<!-- on shippingDetailCollected event, go to orderConfirmation -->
+		<transition on="shippingDetailCollected" to="orderConfirmation" />
+		<!-- on backToCollectCustomerInfo event, go to collectCustomerInfo -->
+		<transition on="backToCollectCustomerInfo" to="collectCustomerInfo" />
+	</view-state>
+
+	<!-- step4: confirm -->
+	<view-state id="orderConfirmation">
+		<!-- on orderConfirmed event, go to processOrder -->
+		<transition on="orderConfirmed" to="processOrder" />
+		<!-- on backToCollectShippingDetail event, go to collectShippingDetail -->
+		<transition on="backToCollectShippingDetail" to="collectShippingDetail" />
+	</view-state>
+
+	<!-- action5: process order -->
+	<action-state id="processOrder">
+		<!-- submit order via service and return expression result to order.orderId -->
+		<evaluate expression="orderServiceImpl.saveOrder(order)" result="order.orderId" />
+		<!-- then go to thankCustomer -->
+		<transition to="thankCustomer" />
+	</action-state>
+
+	<!-- step6: thanks -->
 	<view-state id="thankCustomer" model="order">
 		<transition to="endState" />
 	</view-state>
 
+	<!-- endState do nothing -->
 	<end-state id="endState" />
 
+	<!-- endState cancelled with view -->
+	<!-- specify view file name when filename is different from id -->
 	<end-state id="cancelCheckout" view="checkOutCancelled.jsp" />
 
 	<global-transitions>
+		<!-- go to cancelCheckout on cancel event -->
 		<transition on="cancel" to="cancelCheckout" />
 	</global-transitions>
 </flow>
