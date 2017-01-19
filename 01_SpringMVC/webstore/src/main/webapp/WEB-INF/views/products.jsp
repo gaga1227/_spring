@@ -1,58 +1,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Products</title>
-
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-</head>
-
-<body>
-	<section>
-		<div class="pull-right" style="padding-right: 50px">
-			<a href="<c:url value="/logout" />">Logout</a>
-		</div>
-	</section>
-
-	<section>
-		<div class="jumbotron">
-			<div class="container">
-				<h1>Products</h1>
-				<p>All the available products in our store</p>
-			</div>
-		</div>
-	</section>
-
-	<section class="container">
-		<div class="row">
-			<c:forEach items="${products}" var="product">
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail">
-						<img src="<c:url value="/img/${product.productId}.png"></c:url>" alt="${product.name}" style = "width:100%"/>
-						<div class="caption">
-							<h3>${product.name}</h3>
-							<p>${product.description}</p>
-							<p>${product.unitPrice}USD</p>
-							<p>Available ${product.unitsInStock} units in stock</p>
-							<p>
-								<a
-									href="<spring:url value="/market/product?id=${product.productId}"/>"
-									class="btn btn-primary">
-									<span class="glyphicon-info-sign glyphicon" /></span> Details
-								</a>
-							</p>
-						</div>
+<section class="container">
+	<div class="row">
+		<c:forEach items="${products}" var="product">
+			<div class="col-sm-6 col-md-3">
+				<div class="thumbnail">
+					<img src="<c:url value="/img/${product.productId}.png"></c:url>" alt="${product.name}" style = "width:100%"/>
+					<div class="caption">
+						<h3>${product.name}</h3>
+						<p>${product.description}</p>
+						<h4>$${product.unitPrice}&nbsp;USD</h4>
+						<p>Available ${product.unitsInStock} units in stock</p>
+						<p>
+							<a
+								href="<spring:url value="/market/product?id=${product.productId}"/>"
+								class="btn btn-primary">
+								<span class="glyphicon-info-sign glyphicon" /></span> Details
+							</a>
+						</p>
 					</div>
 				</div>
-			</c:forEach>
-		</div>
-	</section>
-</body>
-</html>
+			</div>
+		</c:forEach>
+	</div>
+</section>

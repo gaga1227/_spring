@@ -9,4 +9,8 @@ INSERT INTO PRODUCTS VALUES ('P1235', 'Dell Inspiron',
 INSERT INTO PRODUCTS VALUES ('P1236', 'Nexus 7',
                      'Google Nexus 7 is the lightest 7 inch tablet With a quad-core Qualcomm Snapdragon S4 Pro processor',
                       300,'Google','Tablet','New',1000,0,false);
+                      
+INSERT INTO PRODUCTS VALUES ('P1237', 'Sony MDRX10',
+                     'Sony MDRX10/RED Simon Cowell X Headphones with 50mm Diaphragms are a flashy, powerful delight',
+                      100,'Sony','Headphone','New',500,0,false);
 

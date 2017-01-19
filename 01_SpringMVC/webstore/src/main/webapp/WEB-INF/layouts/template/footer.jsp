@@ -1,0 +1,1 @@
+<p class="text-center" style="border-top: 1px solid #ddd; padding: 10px 0; margin: 30px 0 0 0;">&copy; Company 2016</p>
